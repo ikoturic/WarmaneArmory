@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://wow.zamimg.com/modelviewer/live/modelviewer.js"></script>
+    <style>
+        html, body {
+          margin: 0;
+          height: 100%;
+          background-color: black;
+        }
+        #model {
+          width: 100%;
+          height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="model"></div>
+<script>
+    // Funkcija za čitanje GET parametara iz URL-a
+    function getQueryParams() {
+        let params = {};
+        location.search.substr(1).split("&").forEach(function(item) {
+            let [key, value] = item.split("=");
+            if(key) params[key] = decodeURIComponent(value);
+        });
+        return params;
+    }
+
+    const params = getQueryParams();
+
+    // Za primjer, uzimamo race, gender iz URL parametara ili default vrijednosti
+    const race = params.race ? parseInt(params.race) : 8; // Troll
+    const gender = params.gender ? parseInt(params.gender) : 0; // Male
+
+    // U iteme možeš poslati id-jeve kao npr. "items=18803,16908,16909,16910,16911"
+    const items = params.items ? params.items.split(",").map(id => ({id: parseInt(id)})) : [
+      { id: 18803 }, { id: 16908 }, { id: 16909 }, { id: 16910 }, { id: 16911 }
+    ];
+
+    new ModelViewer({
+      container: "#model",
+      region: "us",
+      wowheadHost: "wowhead.com",
+      modelType: "character",
+      options: {
+        race: race,
+        gender: gender,
+        items: items
+      }
+    });
+</script>
+</body>
+</html>
